@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "73735522950",
+    "firebase_url": "https://studio-ghibli-movie-wiki-app.firebaseio.com",
+    "project_id": "studio-ghibli-movie-wiki-app",
+    "storage_bucket": "studio-ghibli-movie-wiki-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73735522950:android:904c5c406f28736edc1f07",
+        "android_client_info": {
+          "package_name": "com.barreto.studio.studioghiblimoviewiki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73735522950-fcodrvf551uln87ehrhv978v1optjsv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwNkBag8HdRohgEB4v8IPoLmVC9RSBiT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73735522950-fcodrvf551uln87ehrhv978v1optjsv8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
