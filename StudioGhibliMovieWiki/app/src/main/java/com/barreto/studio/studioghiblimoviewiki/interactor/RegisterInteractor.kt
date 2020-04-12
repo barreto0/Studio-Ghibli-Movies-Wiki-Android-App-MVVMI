@@ -1,7 +1,7 @@
 package com.barreto.studio.studioghiblimoviewiki.interactor
 
 import android.content.Context
-import com.barreto.studio.studioghiblimoviewiki.Profile
+import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
 
 class RegisterInteractor (private val context: Context) {
@@ -32,7 +32,11 @@ class RegisterInteractor (private val context: Context) {
             return
         }
 
-        val profile = Profile(nome, email, senha)
+        val profile = Profile(
+            nome,
+            email,
+            senha
+        )
 
         userRepository.createUser(profile){
                 resultado, mensagem -> callback(resultado, mensagem)

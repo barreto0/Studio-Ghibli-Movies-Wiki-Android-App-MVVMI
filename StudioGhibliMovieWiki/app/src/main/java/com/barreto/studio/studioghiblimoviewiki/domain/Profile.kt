@@ -1,4 +1,4 @@
-package com.barreto.studio.studioghiblimoviewiki
+package com.barreto.studio.studioghiblimoviewiki.domain
 
 data class Profile(
     val nome: String,
