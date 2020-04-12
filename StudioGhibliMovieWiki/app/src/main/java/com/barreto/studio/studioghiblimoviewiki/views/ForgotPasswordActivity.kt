@@ -1,5 +1,6 @@
 package com.barreto.studio.studioghiblimoviewiki.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -27,11 +28,15 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun resetPassword(){
         val email = emailFieldForgotPassword.text.toString()
+        val intentOperation = Intent(this,OperationResultActivity::class.java)
+
         viewModel.resetPassword(email)
         viewModel.result.observe(this, Observer {
             if(viewModel.result.value == false){
                 Toast.makeText(this, "Insira o email corretamente", Toast.LENGTH_SHORT).show()
             }else{
+                intentOperation.putExtra("text", "Email de recuperaçao enviado com sucesso")
+                startActivity(intentOperation)
                 Toast.makeText(this, "Deu bom", Toast.LENGTH_SHORT).show()
             }
         })

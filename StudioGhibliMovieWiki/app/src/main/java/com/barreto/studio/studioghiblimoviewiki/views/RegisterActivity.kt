@@ -1,5 +1,6 @@
 package com.barreto.studio.studioghiblimoviewiki.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -29,13 +30,21 @@ class RegisterActivity : AppCompatActivity() {
         val email = emailFieldRegister.text.toString()
         val senha = senhaFieldRegister.text.toString()
         val nome = nameFieldRegister.text.toString()
+        val intentOperation = Intent(this,OperationResultActivity::class.java)
 
         viewModel.register(email,senha,nome)
         viewModel.resultRegister.observe(this, Observer {
             if(viewModel.resultRegister.value==false){
+
                 Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
+                //TODO: colocar intent para operation activity
+
+
+                intentOperation.putExtra("text", "Usuário Criado Com Sucesso")
+                startActivity(intentOperation)
+
+                //Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }
         })
 
