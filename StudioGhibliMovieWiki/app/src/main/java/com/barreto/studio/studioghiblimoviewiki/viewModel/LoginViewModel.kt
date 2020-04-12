@@ -1,12 +1,14 @@
-package com.barreto.studio.studioghiblimoviewiki
+package com.barreto.studio.studioghiblimoviewiki.viewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.barreto.studio.studioghiblimoviewiki.interactor.LoginInteractor
 
 class LoginViewModel (val app: Application) : AndroidViewModel(app) {
 
-    private val interactor = LoginInteractor(app.applicationContext)
+    private val interactor =
+        LoginInteractor(app.applicationContext)
 
     val resultLogin = MutableLiveData<Boolean>()
     val msg = MutableLiveData<String>()
@@ -15,9 +17,9 @@ class LoginViewModel (val app: Application) : AndroidViewModel(app) {
 
         interactor.login(email,senha){
             resultado, mensagem ->
-            if (resultado.equals(true)){
+            if (resultado){
                 resultLogin.value = true
-                msg.value = mensagem
+
             }else{
                 resultLogin.value = false
                 msg.value = mensagem

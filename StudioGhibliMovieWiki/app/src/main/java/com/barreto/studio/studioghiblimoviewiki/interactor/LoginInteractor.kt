@@ -1,15 +1,14 @@
-package com.barreto.studio.studioghiblimoviewiki
+package com.barreto.studio.studioghiblimoviewiki.interactor
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
+import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
 
 class LoginInteractor (private val context: Context) {
-    val loginRepository = LoginRepository()
+    val userRepository =
+        UserRepository()
 
 
-    fun login(email: String, senha: String, callback: (resultado: Boolean, mensagem: String)-> Unit){
+    fun login(email: String, senha: String, callback: (resultado: Boolean, mensagem: String?)-> Unit){
 
         //AQUI FAZ AS REGRAS DE NEGÓCIO DO LOGIN, VALIDAÇOES
         if (email.isEmpty() && senha.isNotEmpty()) {
@@ -28,11 +27,12 @@ class LoginInteractor (private val context: Context) {
         }
 
         if(senha.length < 6){
+            callback(false,null)
             return
         }
 
 
-        loginRepository.authLogin(email,senha){
+        userRepository.authLogin(email,senha){
             resultado, mensagem -> callback(resultado, mensagem)
         }
 
