@@ -29,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
         val email = emailFieldLogin.text.toString()
         val senha = senhaFieldLogin.text.toString()
 
+
         viewModel.login(email,senha)
         viewModel.resultLogin.observe(this, Observer {
             if(viewModel.resultLogin.value == true){
@@ -36,10 +37,7 @@ class LoginActivity : AppCompatActivity() {
                 val intentMain = Intent(this, MainActivity::class.java)
                 startActivity(intentMain)
             }else{
-                if( viewModel.msg.value != null){
-                    Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
-                }
-
+                Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }
         })
     }
