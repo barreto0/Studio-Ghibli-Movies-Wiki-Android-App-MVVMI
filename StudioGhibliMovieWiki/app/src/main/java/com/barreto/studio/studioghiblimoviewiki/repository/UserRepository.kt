@@ -1,10 +1,7 @@
 package com.barreto.studio.studioghiblimoviewiki.repository
 
-import android.content.Context
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
-import com.barreto.studio.studioghiblimoviewiki.Profile
+import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -32,7 +29,7 @@ class UserRepository() {
         }
     }
 
-    fun createUser(profile: Profile, callback: (resultado: Boolean,mensagem: String)-> Unit){
+    fun createUser(profile: Profile, callback: (resultado: Boolean, mensagem: String)-> Unit){
 
        val operation = mAuth.createUserWithEmailAndPassword(profile.email, profile.senha)
         operation.addOnCompleteListener{task ->
@@ -48,6 +45,17 @@ class UserRepository() {
                 callback(false,erro)
             }
 
+        }
+    }
+
+    fun resetPassword(email: String, callback: (resultado: Boolean) -> Unit){
+        val operation = mAuth.sendPasswordResetEmail(email)
+        operation.addOnCompleteListener{task ->
+            if (task.isSuccessful){
+                callback(true)
+            }else{
+                callback(false)
+            }
         }
     }
 

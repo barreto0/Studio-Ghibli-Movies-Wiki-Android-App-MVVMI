@@ -18,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener { login() }
         btnSignUp.setOnClickListener { signUp() }
+        btnForgotPassword.setOnClickListener{ forgotPassword() }
     }
 
     private val viewModel: LoginViewModel by lazy {
@@ -47,6 +48,11 @@ class LoginActivity : AppCompatActivity() {
         val intentRegister = Intent(this, RegisterActivity::class.java)
         startActivity(intentRegister)
 
+    }
+
+    private fun forgotPassword(){
+        val intentForgotPassword = Intent(this, ForgotPasswordActivity::class.java)
+        startActivity(intentForgotPassword)
     }
 
 }
