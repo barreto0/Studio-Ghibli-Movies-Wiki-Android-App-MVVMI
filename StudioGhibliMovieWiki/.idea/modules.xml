@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Studio Ghibli Movie Wiki.iml" filepath="$PROJECT_DIR$/Studio Ghibli Movie Wiki.iml" group="Studio Ghibli Movie Wiki" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Studio Ghibli Movie Wiki/app" />
+    </modules>
+  </component>
+</project>
