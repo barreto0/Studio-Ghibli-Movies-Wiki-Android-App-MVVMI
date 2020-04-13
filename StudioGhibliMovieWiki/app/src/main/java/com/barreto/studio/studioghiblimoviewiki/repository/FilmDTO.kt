@@ -3,7 +3,7 @@ package com.barreto.studio.studioghiblimoviewiki.repository
 import com.google.gson.annotations.SerializedName
 
 
-data class FilmDTO (
+data class FilmDTO ( //data transfer object
     val id: String? = null,
     val title: String? = null,
     val description: String? = null,
@@ -15,6 +15,7 @@ data class FilmDTO (
 )
 
 data class FilmListDTO(
+
 
     val results: Array<FilmDTO>? = null
 )

@@ -12,8 +12,8 @@ class FilmViewModel (val app: Application) : AndroidViewModel(app) {
     val result = MutableLiveData<Array<Film>>()
 
     fun getFilmsList(){
-        interactor.getFilmsList {
-            result.value = it
+        interactor.getFilmsList {film->
+            result.value = film
         }
     }
 }
