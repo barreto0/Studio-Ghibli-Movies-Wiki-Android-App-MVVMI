@@ -13,9 +13,3 @@ data class FilmDTO ( //data transfer object
 
     val director: String? = null
 )
-
-data class FilmListDTO(
-
-
-    val results: Array<FilmDTO>? = null
-)
