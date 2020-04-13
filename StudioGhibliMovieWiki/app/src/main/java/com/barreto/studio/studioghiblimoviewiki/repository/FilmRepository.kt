@@ -1,6 +1,8 @@
 package com.barreto.studio.studioghiblimoviewiki.repository
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,7 +13,8 @@ import retrofit2.http.Path
 interface FilmsService{
 
     @GET("films")
-    fun getFilmsList(): Call<FilmListDTO>
+    fun getFilmsList(): Call<List<FilmDTO>>
+    //fun getFilmsList(): Call<FilmListDTO>
 
 //    @GET("films")
 //    fun getFilmById(
@@ -28,10 +31,10 @@ class FilmsRepository(context: Context, baseUrl: String) : BaseRetrofit(context,
 
     fun getFilmsList(callback: (films: Array<Film>)->Unit){
 
-        service.getFilmsList().enqueue(object : Callback<FilmListDTO>{
-            override fun onResponse(call: Call<FilmListDTO>, response: Response<FilmListDTO>) {
+        service.getFilmsList().enqueue(object : Callback<List<FilmDTO>>{
+            override fun onResponse(call: Call<List<FilmDTO>>, response: Response<List<FilmDTO>>) {
                 val result = mutableListOf<Film>()
-                val films = response.body()?.results
+                val films = response.body()
 
                 films?.forEach { f->
 
@@ -41,18 +44,18 @@ class FilmsRepository(context: Context, baseUrl: String) : BaseRetrofit(context,
                         description = f.description,
                         director = f.director,
                         releaseDate = f.releaseDate
-
                     )
-
+                    Log.d("film","PORRA")
                     result.add(domain)
                 }
+
 
 
                 callback(result.toTypedArray())
             }
 
-            override fun onFailure(call: Call<FilmListDTO>, t: Throwable) {
-                callback(arrayOf())
+            override fun onFailure(call: Call<List<FilmDTO>>, t: Throwable) {
+                callback(arrayOf()) //array vazio p n quebrar o app
             }
         })
     }
