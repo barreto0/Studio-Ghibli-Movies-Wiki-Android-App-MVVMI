@@ -31,8 +31,8 @@ class FilmAdapter (private val data: Array<Film>) :
         val film = data[position]
         holder.title.text = film.title
         holder.description.text = film.description
-        holder.releaseDate.text = film.releaseDate
-        holder.director.text = film.director
+        holder.releaseDate.text = "Ano de estreia: " + film.releaseDate
+        holder.director.text = "Diretor: " + film.director
     }
 
     class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { //classe que aponta para os objetos visuais

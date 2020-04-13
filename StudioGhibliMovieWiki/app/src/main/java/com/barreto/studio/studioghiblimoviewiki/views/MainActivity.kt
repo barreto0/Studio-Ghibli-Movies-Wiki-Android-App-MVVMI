@@ -2,6 +2,7 @@ package com.barreto.studio.studioghiblimoviewiki.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,11 +35,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFilms(){
+
         viewModel.result.observe(this, Observer {films->
             //tvDebug.text = films.contentToString()
             val adapter = FilmAdapter(films)
             rvFilms.adapter = adapter
+            while (films==null || films.isEmpty()){
+                progressBarMain.visibility = View.VISIBLE
+            }
+            progressBarMain.visibility = View.GONE
         })
         viewModel.getFilmsList()
+
     }
 }

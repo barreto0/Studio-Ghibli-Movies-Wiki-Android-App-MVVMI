@@ -3,6 +3,7 @@ package com.barreto.studio.studioghiblimoviewiki.views
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,11 @@ class LoginActivity : AppCompatActivity() {
         btnForgotPassword.setOnClickListener{ forgotPassword() }
     }
 
+    override fun onStop() {
+        super.onStop()
+        progressBarLogin.visibility = View.GONE
+    }
+
     private val viewModel: LoginViewModel by lazy {
         ViewModelProvider(this). get(LoginViewModel::class.java)
     }
@@ -32,11 +38,12 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.login(email,senha)
         viewModel.resultLogin.observe(this, Observer {
-            if(viewModel.resultLogin.value == true){
-
+            if(it == true){
+                progressBarLogin.visibility = View.VISIBLE
                 val intentMain = Intent(this, MainActivity::class.java)
                 startActivity(intentMain)
             }else{
+                progressBarLogin.visibility = View.GONE
                 Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }
         })
