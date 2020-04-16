@@ -1,5 +1,6 @@
 package com.barreto.studio.studioghiblimoviewiki.views.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,9 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.barreto.studio.studioghiblimoviewiki.R
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
+import com.barreto.studio.studioghiblimoviewiki.views.FilmDetailActivity
 import kotlinx.android.synthetic.main.film_list_item.view.*
 
-class FilmAdapter (private val data: Array<Film>) :
+class FilmAdapter (private val data: Array<Film>, var clickListener: OnFilmItemClickListener) :
     RecyclerView.Adapter<FilmAdapter.FilmViewHolder>(){
 
     //Recycler -> ViewHolder -> Adapter
@@ -28,11 +30,14 @@ class FilmAdapter (private val data: Array<Film>) :
 
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
         //pega os dados do array de filmes e passa para a holder q passa para a recycle
-        val film = data[position]
+        /*val film = data[position]
         holder.title.text = film.title
         holder.description.text = film.description
         holder.releaseDate.text = "Ano de estreia: " + film.releaseDate
-        holder.director.text = "Diretor: " + film.director
+        holder.director.text = "Diretor: " + film.director*/
+
+        holder.initialize(data.get(position),clickListener)
+
     }
 
     class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { //classe que aponta para os objetos visuais
@@ -41,5 +46,19 @@ class FilmAdapter (private val data: Array<Film>) :
         val releaseDate: TextView = itemView.tvReleaseDate
         val director: TextView = itemView.tvDirector
 
+        fun initialize(item: Film, action: OnFilmItemClickListener){
+            title.text = item.title
+            description.text = item.description
+            releaseDate.text = item.releaseDate
+            director.text = item.director
+            itemView.setOnClickListener{
+                action.onItemClick(item, adapterPosition)
+            }
+        }
+
     }
+}
+
+interface OnFilmItemClickListener{
+    fun onItemClick(item: Film, position: Int)
 }

@@ -36,16 +36,22 @@ class LoginActivity : AppCompatActivity() {
         val senha = senhaFieldLogin.text.toString()
 
 
+        progressBarLogin.visibility = View.VISIBLE
         viewModel.login(email,senha)
         viewModel.resultLogin.observe(this, Observer {
             if(it == true){
-                progressBarLogin.visibility = View.VISIBLE
+                progressBarLogin.visibility = View.GONE
                 val intentMain = Intent(this, MainActivity::class.java)
                 startActivity(intentMain)
-            }else{
+            }
+
+        })
+        viewModel.msg.observe(this, Observer {
+            if(it != null){
                 progressBarLogin.visibility = View.GONE
                 Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }
+            viewModel.msg.value == null
         })
     }
 
