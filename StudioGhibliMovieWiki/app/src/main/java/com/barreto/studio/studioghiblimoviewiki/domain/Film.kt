@@ -7,8 +7,3 @@ data class Film (
     val releaseDate: String? = null,
     val director: String? = null
 )
-
-data class FilmList(
-
-    val results: Array<Film>? = null
-)

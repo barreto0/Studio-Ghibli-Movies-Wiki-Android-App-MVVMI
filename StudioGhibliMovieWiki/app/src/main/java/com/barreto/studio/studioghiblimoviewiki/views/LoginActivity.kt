@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.barreto.studio.studioghiblimoviewiki.viewModel.LoginViewModel
+import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import com.barreto.studio.studioghiblimoviewiki.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -27,8 +27,8 @@ class LoginActivity : AppCompatActivity() {
         progressBarLogin.visibility = View.GONE
     }
 
-    private val viewModel: LoginViewModel by lazy {
-        ViewModelProvider(this). get(LoginViewModel::class.java)
+    private val viewModel: UserViewModel by lazy {
+        ViewModelProvider(this). get(UserViewModel::class.java)
     }
 
     private fun login(){
@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
 
         progressBarLogin.visibility = View.VISIBLE
         viewModel.login(email,senha)
-        viewModel.resultLogin.observe(this, Observer {
+        viewModel.result.observe(this, Observer {
             if(it == true){
                 progressBarLogin.visibility = View.GONE
                 val intentMain = Intent(this, MainActivity::class.java)

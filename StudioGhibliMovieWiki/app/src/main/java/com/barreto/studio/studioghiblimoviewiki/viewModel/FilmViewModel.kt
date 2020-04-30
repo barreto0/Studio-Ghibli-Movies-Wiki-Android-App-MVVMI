@@ -15,5 +15,6 @@ class FilmViewModel (val app: Application) : AndroidViewModel(app) {
         interactor.getFilmsList {film->
             result.value = film
         }
+
     }
 }

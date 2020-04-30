@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.barreto.studio.studioghiblimoviewiki.R
-import com.barreto.studio.studioghiblimoviewiki.viewModel.RegisterViewModel
+import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
@@ -22,8 +22,8 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private val viewModel: RegisterViewModel by lazy {
-        ViewModelProvider(this). get(RegisterViewModel::class.java)
+    private val viewModel: UserViewModel by lazy {
+        ViewModelProvider(this). get(UserViewModel::class.java)
     }
 
     fun register(){
@@ -33,8 +33,8 @@ class RegisterActivity : AppCompatActivity() {
         val intentOperation = Intent(this,OperationResultActivity::class.java)
 
         viewModel.register(email,senha,nome)
-        viewModel.resultRegister.observe(this, Observer {
-            if(viewModel.resultRegister.value==false){
+        viewModel.result.observe(this, Observer {
+            if(viewModel.result.value==false){
 
                 Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }else{

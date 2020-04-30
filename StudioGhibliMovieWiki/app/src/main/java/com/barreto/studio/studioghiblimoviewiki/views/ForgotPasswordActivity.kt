@@ -7,8 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.barreto.studio.studioghiblimoviewiki.R
-import com.barreto.studio.studioghiblimoviewiki.viewModel.ForgotPasswordViewModel
-import com.barreto.studio.studioghiblimoviewiki.viewModel.LoginViewModel
+import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 
 class ForgotPasswordActivity : AppCompatActivity() {
@@ -22,8 +21,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
         btnSendPasswordReset.setOnClickListener { resetPassword() }
     }
 
-    private val viewModel: ForgotPasswordViewModel by lazy {
-        ViewModelProvider(this). get(ForgotPasswordViewModel::class.java)
+    private val viewModel: UserViewModel by lazy {
+        ViewModelProvider(this). get(UserViewModel::class.java)
     }
 
     private fun resetPassword(){
