@@ -1,4 +1,4 @@
-package com.barreto.studio.studioghiblimoviewiki.views
+package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -30,15 +30,17 @@ class RegisterActivity : AppCompatActivity() {
         val email = emailFieldRegister.text.toString()
         val senha = senhaFieldRegister.text.toString()
         val nome = nameFieldRegister.text.toString()
-        val intentOperation = Intent(this,OperationResultActivity::class.java)
+        val latitude: String = 0.0.toString()
+        val longitude: String = 0.0.toString()
+        val intentOperation = Intent(this,
+            OperationResultActivity::class.java)
 
-        viewModel.register(email,senha,nome)
+        viewModel.register(email,senha,nome, latitude, longitude)
         viewModel.result.observe(this, Observer {
             if(viewModel.result.value==false){
 
                 Toast.makeText(this, viewModel.msg.value.toString(), Toast.LENGTH_SHORT).show()
             }else{
-                //TODO: colocar intent para operation activity
 
 
                 intentOperation.putExtra("text", "Usuário Criado Com Sucesso")

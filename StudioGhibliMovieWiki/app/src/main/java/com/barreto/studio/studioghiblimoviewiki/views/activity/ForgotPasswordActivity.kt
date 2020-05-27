@@ -1,4 +1,4 @@
-package com.barreto.studio.studioghiblimoviewiki.views
+package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -27,7 +27,8 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
     private fun resetPassword(){
         val email = emailFieldForgotPassword.text.toString()
-        val intentOperation = Intent(this,OperationResultActivity::class.java)
+        val intentOperation = Intent(this,
+            OperationResultActivity::class.java)
 
         viewModel.resetPassword(email)
         viewModel.result.observe(this, Observer {

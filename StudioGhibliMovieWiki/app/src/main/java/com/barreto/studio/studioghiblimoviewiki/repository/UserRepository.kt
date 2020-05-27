@@ -38,7 +38,8 @@ class UserRepository() {
                 val userAtual = mDatabaseReference.child(userId)
                 userAtual.child("Nome").setValue(profile.nome)
                 userAtual.child("Email").setValue(profile.email)
-
+                userAtual.child("Location").child("Latitude").setValue(profile.latitude)
+                userAtual.child("Location").child("Longitude").setValue(profile.longitude)
                 callback(true,"sucesso")
             }else{
                 val erro = task.exception?.localizedMessage?: "Deu Ruim"

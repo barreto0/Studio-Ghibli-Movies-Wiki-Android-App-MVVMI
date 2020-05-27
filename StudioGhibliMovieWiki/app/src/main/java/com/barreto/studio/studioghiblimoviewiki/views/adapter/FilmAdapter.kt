@@ -1,6 +1,5 @@
 package com.barreto.studio.studioghiblimoviewiki.views.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.barreto.studio.studioghiblimoviewiki.R
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
-import com.barreto.studio.studioghiblimoviewiki.views.FilmDetailActivity
 import kotlinx.android.synthetic.main.film_list_item.view.*
 
 class FilmAdapter (private val data: Array<Film>, var clickListener: OnFilmItemClickListener) :

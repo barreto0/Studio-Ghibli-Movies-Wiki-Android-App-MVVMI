@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Studio Ghibli Movie Wiki</string>
+    <string name="title_activity_maps">Usuários Próximos</string>
 </resources>

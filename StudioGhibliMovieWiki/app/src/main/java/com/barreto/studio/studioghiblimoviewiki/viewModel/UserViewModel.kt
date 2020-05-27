@@ -29,8 +29,8 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
 
     }
 
-    fun register(email: String, senha:String, nome: String){
-        interactor.register(email,senha, nome){
+    fun register(email: String, senha:String, nome: String, latitude: String, longitude: String ){
+        interactor.register(email,senha, nome, latitude, longitude){
                 resultado, mensagem ->
             if (resultado){
                 result.value = true
