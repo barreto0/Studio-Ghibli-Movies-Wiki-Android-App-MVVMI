@@ -1,11 +1,9 @@
-package com.barreto.studio.studioghiblimoviewiki.views
+package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,7 +52,8 @@ class MainActivity : AppCompatActivity(), OnFilmItemClickListener {
     }
 
     override fun onItemClick(item: Film, position: Int) {
-        val intentFilmDetail = Intent(this,FilmDetailActivity::class.java)
+        val intentFilmDetail = Intent(this,
+            FilmDetailActivity::class.java)
         intentFilmDetail.putExtra("title",item.title)
         intentFilmDetail.putExtra("description",item.description)
         intentFilmDetail.putExtra("releaseDate", item.releaseDate)

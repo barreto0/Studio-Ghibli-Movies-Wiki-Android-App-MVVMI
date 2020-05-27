@@ -1,4 +1,4 @@
-package com.barreto.studio.studioghiblimoviewiki.views
+package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +20,11 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener { login() }
         btnSignUp.setOnClickListener { signUp() }
         btnForgotPassword.setOnClickListener{ forgotPassword() }
+
+        btnDebugMaps.setOnClickListener{
+            val intentMaps= Intent(this, MapsActivity::class.java)
+            startActivity(intentMaps)
+        }
     }
 
     override fun onStop() {

@@ -39,7 +39,7 @@ class UserInteractor (private val context: Context) {
 
     }
 
-    fun register(email: String, senha: String, nome:String,callback: (resultado: Boolean, mensagem: String?)-> Unit){
+    fun register(email: String, senha: String, nome:String,latitude: String, longitude: String, callback: (resultado: Boolean, mensagem: String?)-> Unit){
 
         //AQUI FAZ AS REGRAS DE NEGÓCIO DO LOGIN, VALIDAÇOES
         //TODO: acrescentar validaçao de email sem ser por regex
@@ -66,7 +66,9 @@ class UserInteractor (private val context: Context) {
         val profile = Profile(
             nome,
             email,
-            senha
+            senha,
+            latitude,
+            longitude
         )
 
         userRepository.createUser(profile){
