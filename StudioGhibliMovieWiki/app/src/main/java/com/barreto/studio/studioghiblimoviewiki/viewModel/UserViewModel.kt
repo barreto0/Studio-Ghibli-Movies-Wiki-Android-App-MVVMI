@@ -3,7 +3,9 @@ package com.barreto.studio.studioghiblimoviewiki.viewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.barreto.studio.studioghiblimoviewiki.domain.Film
 import com.barreto.studio.studioghiblimoviewiki.interactor.UserInteractor
+import com.google.firebase.auth.FirebaseUser
 
 class UserViewModel (val app: Application) : AndroidViewModel(app) {
 
@@ -12,6 +14,8 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
 
     val result = MutableLiveData<Boolean>()
     val msg = MutableLiveData<String>()
+
+    val resultGetFavoritesFromUser = MutableLiveData<Array<Film>>()
 
     fun login(email: String, senha: String){ //AQUI SÓ PODE TER REGRA DE FORMATAÇAO
 
@@ -49,6 +53,19 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
         interactor.resetPassword(email){
             result.value = it
         }
+    }
+
+    fun addFilmToUserFavorites(favorite: Film){
+        interactor.addFilmToUserFavorites(favorite){
+            result.value = it
+        }
+    }
+
+    fun retrieveFavoritesFromUser(){
+        interactor.retrieveFavoritesFromUser(){
+            resultGetFavoritesFromUser.value = it
+        }
+
     }
 
 }

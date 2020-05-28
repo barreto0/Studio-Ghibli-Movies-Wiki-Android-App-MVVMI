@@ -1,8 +1,10 @@
 package com.barreto.studio.studioghiblimoviewiki.interactor
 
 import android.content.Context
+import com.barreto.studio.studioghiblimoviewiki.domain.Film
 import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
+import com.google.firebase.auth.FirebaseUser
 
 class UserInteractor (private val context: Context) {
     val userRepository =
@@ -88,5 +90,14 @@ class UserInteractor (private val context: Context) {
         }
     }
 
+    fun addFilmToUserFavorites(favorite: Film, callback: (resultado: Boolean)->Unit){
+        userRepository.addFilmToUserFavorites(favorite){
+            callback(it)
+        }
+    }
+
+    fun retrieveFavoritesFromUser( callback: (films: Array<Film>)->Unit){
+        userRepository.retrieveFavoritesFromUser( callback)
+    }
 
 }

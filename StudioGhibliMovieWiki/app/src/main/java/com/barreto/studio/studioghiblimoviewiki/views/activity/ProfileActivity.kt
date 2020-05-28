@@ -1,55 +1,47 @@
 package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.barreto.studio.studioghiblimoviewiki.R
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
-import com.barreto.studio.studioghiblimoviewiki.viewModel.FilmViewModel
+import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
+import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import com.barreto.studio.studioghiblimoviewiki.views.adapter.FilmAdapter
 import com.barreto.studio.studioghiblimoviewiki.views.adapter.OnFilmItemClickListener
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.Serializable
 
-class MainActivity : AppCompatActivity(), OnFilmItemClickListener {
+class ProfileActivity : AppCompatActivity(), OnFilmItemClickListener {
 
+    val userRepository = UserRepository()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        //btnTesteApi.setOnClickListener { showFilms() }
-        btnProfile.setOnClickListener {
-            val intentProfile = Intent(this,
-                ProfileActivity::class.java)
-            startActivity(intentProfile)
-        }
+        setContentView(R.layout.activity_profile)
         configureRecyclerView()
-        showFilms()
-
-
+        showFilmFavorites()
     }
 
-    private val viewModel: FilmViewModel by lazy {
-        ViewModelProvider(this).get(FilmViewModel::class.java)
+    private val viewModel: UserViewModel by lazy {
+        ViewModelProvider(this).get(UserViewModel::class.java)
     }
 
     private fun configureRecyclerView(){
-        rvFilms.layoutManager = LinearLayoutManager(this) //falando para a atividade mostrar os dados de forma linear vertical
+        rvFavorites.layoutManager = LinearLayoutManager(this) //falando para a atividade mostrar os dados de forma linear vertical
     }
 
-    private fun showFilms(){
+    private fun showFilmFavorites(){
 
-        viewModel.result.observe(this, Observer {films->
+        viewModel.resultGetFavoritesFromUser.observe(this, Observer {films->
             //tvDebug.text = films.contentToString()
             val adapter = FilmAdapter(films,this)
-            rvFilms.adapter = adapter
+            rvFavorites.adapter = adapter
 
         })
-        viewModel.getFilmsList()
+        viewModel.retrieveFavoritesFromUser()
 
     }
 
