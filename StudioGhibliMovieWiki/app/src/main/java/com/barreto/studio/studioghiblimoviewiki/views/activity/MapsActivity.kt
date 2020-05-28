@@ -12,15 +12,14 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
+import com.barreto.studio.studioghiblimoviewiki.domain.Profile
+import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
 import com.barreto.studio.studioghiblimoviewiki.viewModel.MapsViewModel
-import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
@@ -29,9 +28,14 @@ import kotlinx.android.synthetic.main.activity_maps.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    val PERMISSION_ID = 42
+    val PERMISSION_ID = 69
     private lateinit var mMap: GoogleMap
     lateinit var mFusedLocationClient: FusedLocationProviderClient
+
+    lateinit var userList: MutableList<Profile>
+
+    private val userRepository =
+        UserRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +49,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        userList = userRepository.retrieveUserData()
         //getLastLocation()
     }
 
@@ -52,8 +57,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         ViewModelProvider(this). get(MapsViewModel::class.java)
     }
 
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation(mMap: GoogleMap) {
+    @SuppressLint("MissingPermission", "SetTextI18n")
+    private fun getlastLocation(mMap: GoogleMap) {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
 
@@ -64,9 +69,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     } else {
                         latTextView.text = "Latitude ${location.latitude.toString()}"
                         lonTextView.text = "Longitude ${location.longitude.toString()}"
-                        var userLocation = LatLng(location.latitude,location.longitude)
-                        mMap.addMarker(MarkerOptions().position(userLocation).title("Você está aqui!"))
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+
+                        userRepository.updateCurrentUserLocation(location.latitude.toString(), location.longitude.toString())
+
+                        for(u in userList){
+                            var userLocation = LatLng(u.Latitude.toDouble(),u.Longitude.toDouble())
+                            mMap.addMarker(MarkerOptions().position(userLocation).title(u.Nome))
+                        }
+
+                        var currentUserLocation = LatLng(location.latitude,location.longitude)
+                       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 15f))
                     }
                 }
             } else {
@@ -95,10 +107,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private val mLocationCallback = object : LocationCallback() {
+        @SuppressLint("SetTextI18n")
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
-            findViewById<TextView>(R.id.latTextView).text = "Latitude ${mLastLocation.latitude.toString()}"
-            findViewById<TextView>(R.id.lonTextView).text = "Longitude ${mLastLocation.longitude.toString()}"
+            latTextView.text = "Latitude ${mLastLocation.latitude.toString()}"
+            lonTextView.text = "Longitude ${mLastLocation.longitude.toString()}"
 
         }
     }
@@ -137,13 +150,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLastLocation(mMap)
+                getlastLocation(mMap)
             }
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        getLastLocation(mMap)
+        getlastLocation(mMap)
     }
 }
