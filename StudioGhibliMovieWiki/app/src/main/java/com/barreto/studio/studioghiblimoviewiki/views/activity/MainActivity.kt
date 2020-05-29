@@ -27,6 +27,10 @@ class MainActivity : AppCompatActivity(), OnFilmItemClickListener {
                 ProfileActivity::class.java)
             startActivity(intentProfile)
         }
+        btnFindOtherUsers.setOnClickListener{
+            val intentMaps= Intent(this, MapsActivity::class.java)
+            startActivity(intentMaps)
+        }
         configureRecyclerView()
         showFilms()
 

@@ -1,8 +1,10 @@
 package com.barreto.studio.studioghiblimoviewiki.repository
 
+import android.location.Location
 import android.util.Log
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
 import com.barreto.studio.studioghiblimoviewiki.domain.Profile
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -12,7 +14,7 @@ import com.google.firebase.database.ValueEventListener
 
 class UserRepository() {
 
-    private val TAG = "DebugFirebase"
+
     val mAuth = FirebaseAuth.getInstance()
     val mDatabase = FirebaseDatabase.getInstance()
     val mDatabaseReferenceUsers = mDatabase.reference.child("Users")
@@ -25,10 +27,9 @@ class UserRepository() {
         operation.addOnCompleteListener { task ->
             if (task.isSuccessful) {
 
-                Log.v(TAG, task.toString())
                 callback(true,"sucesso")
             } else {
-                Log.v(TAG, task.toString())
+
                 val erro = task.exception?.localizedMessage ?: "Deu Ruim"
                 callback(false,erro)
             }
@@ -68,7 +69,7 @@ class UserRepository() {
 
     fun updateCurrentUserLocation(latitude:String, longitude:String){
         if (mAuth.currentUser!=null){
-            println("USUÁRIO ${mAuth.currentUser!!.uid}")
+
             val userId = mAuth.currentUser!!.uid
             val userAtual = mDatabaseReferenceUsers.child(userId)
             userAtual.child("Latitude").setValue(latitude)
@@ -88,7 +89,6 @@ class UserRepository() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
-                    //print(p0.value)
                     for (u in p0.children){
                         val user = u.getValue(Profile::class.java)
                         print("USER: $user")
@@ -99,6 +99,7 @@ class UserRepository() {
                 }
             }
         })
+
         return userList
     }
 
@@ -114,10 +115,9 @@ class UserRepository() {
             callback(false)
         }
     }
-
     fun retrieveFavoritesFromUser(callback: (films: Array<Film>)->Unit){
         var filmList: MutableList<Film> = mutableListOf()
-        Log.d("USUARIO ATUAL LOG","CURRENT USER ID ${mAuth.currentUser!!.uid}")
+
         mDatabaseReferenceUsers.child("${mAuth.currentUser!!.uid}").child("Favoritos").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 print("deu ruim")
@@ -125,19 +125,88 @@ class UserRepository() {
 
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
-                    Log.d("USUARIO ATUAL LOG","conteudo dataSnapshot Favoritos ${p0.value}")
                     for (f in p0.children){
                         val film = f.getValue(Film::class.java)
-                        Log.d("USUARIO ATUAL LOG","FILME $film")
-                        filmList.add(film!!)
+                        Log.d("USUARIO ATUAL LOG","FILME ${film!!.title}")
+                        filmList.add(film)
+
+                    }
+                    callback(filmList.toTypedArray())
+                }else{
+                    print("vazio")
+                }
+            }
+        })
+
+    }
+
+    fun getCurrentUserData(callback: (user: Profile)->Unit){
+        mDatabaseReferenceUsers.child("${mAuth.currentUser!!.uid}").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                print("deu ruim")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()){
+                    val user = p0.getValue(Profile::class.java)
+                    callback(user!!)
+                }else{
+                    print("vazio")
+                }
+            }
+        })
+
+    }
+
+    fun retrieveUserDataWithLocation(location: LatLng, callback: (nome: String, films: Array<Film>) -> Unit) {
+
+        val filmList: MutableList<Film> = mutableListOf()
+        val latitude = location.latitude
+        val longitude = location.longitude
+
+        mDatabaseReferenceUsers.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                print("deu ruim")
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()){
+                    for (u in p0.children){
+                        val user = u.getValue(Profile::class.java)
+                        if (user!!.Latitude.equals(latitude.toString()) && user.Longitude.equals(longitude.toString())){
+//                            val favorito = u.child("Favoritos").getValue(Film::class.java)
+//                            filmList.add(favorito!!)
+//                            Log.d("USER MAPA", "${user.Nome} ${filmList.toTypedArray().contentToString()}")
+//                            callback(user.Nome, filmList.toTypedArray())
+                            mDatabaseReferenceUsers.child("${u.key}").child("Favoritos").addValueEventListener(object : ValueEventListener{
+                                override fun onCancelled(p0: DatabaseError) {
+                                    print("deu ruim")
+                                }
+
+                                override fun onDataChange(p0: DataSnapshot) {
+                                    if (p0.exists()){
+                                        for (f in p0.children){
+                                            val film = f.getValue(Film::class.java)
+
+                                            filmList.add(film!!)
+                                        }
+                                        Log.d("USER MAPA", "${user.Nome} ${filmList.toTypedArray().contentToString()}")
+
+                                    }else{
+                                        print("vazio")
+                                    }
+                                }
+                            })
+                        }
+
                     }
                 }else{
                     print("vazio")
                 }
             }
         })
-        Log.d("USUARIO ATUAL LOG","Lista de filmes favoritos ${filmList.toTypedArray().contentToString()}")
-        callback(filmList.toTypedArray())
+
+
     }
 
 }

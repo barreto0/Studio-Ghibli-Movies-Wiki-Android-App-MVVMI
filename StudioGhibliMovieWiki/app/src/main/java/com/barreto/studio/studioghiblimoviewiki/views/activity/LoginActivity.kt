@@ -20,11 +20,11 @@ class LoginActivity : AppCompatActivity() {
         btnLogin.setOnClickListener { login() }
         btnSignUp.setOnClickListener { signUp() }
         btnForgotPassword.setOnClickListener{ forgotPassword() }
-
-        btnDebugMaps.setOnClickListener{
+        btnDebugMaps.setOnClickListener {
             val intentMaps= Intent(this, MapsActivity::class.java)
             startActivity(intentMaps)
         }
+
     }
 
     override fun onStop() {

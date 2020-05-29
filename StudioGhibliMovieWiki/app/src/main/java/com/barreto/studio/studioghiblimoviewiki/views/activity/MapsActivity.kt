@@ -8,31 +8,36 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
-import com.barreto.studio.studioghiblimoviewiki.viewModel.MapsViewModel
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_maps.*
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
 
     val PERMISSION_ID = 69
     private lateinit var mMap: GoogleMap
     lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     lateinit var userList: MutableList<Profile>
+
 
     private val userRepository =
         UserRepository()
@@ -53,10 +58,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //getLastLocation()
     }
 
-    private val viewModel: MapsViewModel by lazy {
-        ViewModelProvider(this). get(MapsViewModel::class.java)
-    }
-
     @SuppressLint("MissingPermission", "SetTextI18n")
     private fun getlastLocation(mMap: GoogleMap) {
         if (checkPermissions()) {
@@ -74,11 +75,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         for(u in userList){
                             var userLocation = LatLng(u.Latitude.toDouble(),u.Longitude.toDouble())
-                            mMap.addMarker(MarkerOptions().position(userLocation).title(u.Nome))
+                            mMap.addMarker(MarkerOptions().position(userLocation).title(u.Nome).icon(
+                                BitmapDescriptorFactory.fromBitmap(
+                                BitmapFactory.decodeResource(resources, R.mipmap.icon_user_location))))
+                        }
+                        mMap.setOnInfoWindowClickListener { marker ->
+                            val loc = LatLng(marker.position.latitude,marker.position.longitude)
+
+                            val intentNearbyUsersProfile = Intent(this,NearbyUsersProfile::class.java)
+                            intentNearbyUsersProfile.putExtra("location",loc)
+                            startActivity(intentNearbyUsersProfile)
                         }
 
                         var currentUserLocation = LatLng(location.latitude,location.longitude)
-                       // mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 15f))
+                       //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 12f))
                     }
                 }
             } else {
@@ -90,6 +100,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             requestPermissions()
         }
     }
+
+
 
     @SuppressLint("MissingPermission")
     private fun requestNewLocationData() {
@@ -159,4 +171,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         getlastLocation(mMap)
     }
+
+
+
 }
