@@ -1,10 +1,13 @@
 package com.barreto.studio.studioghiblimoviewiki.viewModel
 
 import android.app.Application
+import android.location.Location
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
+import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.barreto.studio.studioghiblimoviewiki.interactor.UserInteractor
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 
 class UserViewModel (val app: Application) : AndroidViewModel(app) {
@@ -16,6 +19,10 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
     val msg = MutableLiveData<String>()
 
     val resultGetFavoritesFromUser = MutableLiveData<Array<Film>>()
+
+    var username = MutableLiveData<String>()
+
+    val resultRetrieveUserDataWithLocation = MutableLiveData<Array<Film>>()
 
     fun login(email: String, senha: String){ //AQUI SÓ PODE TER REGRA DE FORMATAÇAO
 
@@ -66,6 +73,19 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
             resultGetFavoritesFromUser.value = it
         }
 
+    }
+
+    fun getCurrentUserData(){
+        interactor.getCurrentUserData {
+            username.value = it.Nome
+        }
+    }
+
+    fun retrieveUserDataWithLocation(location: LatLng){
+        interactor.retrieveUserDataWithLocation(location){nome, films ->
+            username.value = nome
+            resultRetrieveUserDataWithLocation.value = films
+        }
     }
 
 }

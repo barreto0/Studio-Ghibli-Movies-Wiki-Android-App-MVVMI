@@ -8,21 +8,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.barreto.studio.studioghiblimoviewiki.R
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
-import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
 import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import com.barreto.studio.studioghiblimoviewiki.views.adapter.FilmAdapter
 import com.barreto.studio.studioghiblimoviewiki.views.adapter.OnFilmItemClickListener
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.Serializable
 
 class ProfileActivity : AppCompatActivity(), OnFilmItemClickListener {
 
-    val userRepository = UserRepository()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
+        title = "Meus Favoritos"
+        changeProfileTitle()
         configureRecyclerView()
         showFilmFavorites()
+
     }
 
     private val viewModel: UserViewModel by lazy {
@@ -33,10 +35,16 @@ class ProfileActivity : AppCompatActivity(), OnFilmItemClickListener {
         rvFavorites.layoutManager = LinearLayoutManager(this) //falando para a atividade mostrar os dados de forma linear vertical
     }
 
+    private fun changeProfileTitle(){
+        viewModel.getCurrentUserData()
+        viewModel.username.observe(this, Observer {
+            //title = "Filmes favoritos do $it"
+        })
+    }
+
     private fun showFilmFavorites(){
 
         viewModel.resultGetFavoritesFromUser.observe(this, Observer {films->
-            //tvDebug.text = films.contentToString()
             val adapter = FilmAdapter(films,this)
             rvFavorites.adapter = adapter
 
@@ -46,12 +54,7 @@ class ProfileActivity : AppCompatActivity(), OnFilmItemClickListener {
     }
 
     override fun onItemClick(item: Film, position: Int) {
-        val intentFilmDetail = Intent(this,
-            FilmDetailActivity::class.java)
-//        intentFilmDetail.putExtra("title",item.title)
-//        intentFilmDetail.putExtra("description",item.description)
-//        intentFilmDetail.putExtra("releaseDate", item.releaseDate)
-//        intentFilmDetail.putExtra("director", item.director)
+        val intentFilmDetail = Intent(this, FilmDetailActivity::class.java)
         intentFilmDetail.putExtra("film",item as Serializable)
         startActivity(intentFilmDetail)
     }

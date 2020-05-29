@@ -1,9 +1,11 @@
 package com.barreto.studio.studioghiblimoviewiki.interactor
 
 import android.content.Context
+import android.location.Location
 import com.barreto.studio.studioghiblimoviewiki.domain.Film
 import com.barreto.studio.studioghiblimoviewiki.domain.Profile
 import com.barreto.studio.studioghiblimoviewiki.repository.UserRepository
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseUser
 
 class UserInteractor (private val context: Context) {
@@ -98,6 +100,14 @@ class UserInteractor (private val context: Context) {
 
     fun retrieveFavoritesFromUser( callback: (films: Array<Film>)->Unit){
         userRepository.retrieveFavoritesFromUser( callback)
+    }
+
+    fun getCurrentUserData(callback: (user: Profile)->Unit){
+        userRepository.getCurrentUserData(callback)
+    }
+
+    fun retrieveUserDataWithLocation(location: LatLng, callback: (nome: String, films: Array<Film>) -> Unit){
+        userRepository.retrieveUserDataWithLocation(location, callback)
     }
 
 }
