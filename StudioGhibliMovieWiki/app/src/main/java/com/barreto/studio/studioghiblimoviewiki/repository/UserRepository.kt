@@ -191,8 +191,9 @@ class UserRepository() {
                                             filmList.add(film!!)
                                         }
                                         Log.d("USER MAPA", "${user.Nome} ${filmList.toTypedArray().contentToString()}")
-
+                                        callback(user.Nome, filmList.toTypedArray())
                                     }else{
+                                        callback(user.Nome, filmList.toTypedArray())
                                         print("vazio")
                                     }
                                 }

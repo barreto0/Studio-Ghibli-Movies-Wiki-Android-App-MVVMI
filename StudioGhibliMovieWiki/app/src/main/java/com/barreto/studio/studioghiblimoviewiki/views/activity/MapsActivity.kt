@@ -88,7 +88,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
                         }
 
                         var currentUserLocation = LatLng(location.latitude,location.longitude)
-                       //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 12f))
+                       mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentUserLocation, 12f))
                     }
                 }
             } else {

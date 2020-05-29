@@ -6,11 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".views.activity.NearbyUsersProfile">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNearbyFavorites"
+        android:layout_width="404dp"
+        android:layout_height="515dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="9dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/tvNbu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="68dp" />
+        android:id="@+id/tvEmptyFavorites"
+        android:layout_width="369dp"
+        android:layout_height="121dp"
+        android:layout_marginStart="175dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="175dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
