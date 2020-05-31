@@ -14,22 +14,17 @@ import com.google.firebase.database.ValueEventListener
 
 class UserRepository() {
 
-
     val mAuth = FirebaseAuth.getInstance()
     val mDatabase = FirebaseDatabase.getInstance()
     val mDatabaseReferenceUsers = mDatabase.reference.child("Users")
 
-
     fun authLogin(email:String, senha:String, callback: (resultado: Boolean,mensagem: String)-> Unit){
         //fazer a autenticaçao e jogar pra tela principal se tiver dado certo
-
         val operation = mAuth.signInWithEmailAndPassword(email, senha)
         operation.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-
                 callback(true,"sucesso")
             } else {
-
                 val erro = task.exception?.localizedMessage ?: "Deu Ruim"
                 callback(false,erro)
             }
@@ -52,7 +47,6 @@ class UserRepository() {
                 val erro = task.exception?.localizedMessage?: "Deu Ruim"
                 callback(false,erro)
             }
-
         }
     }
 
@@ -69,7 +63,6 @@ class UserRepository() {
 
     fun updateCurrentUserLocation(latitude:String, longitude:String){
         if (mAuth.currentUser!=null){
-
             val userId = mAuth.currentUser!!.uid
             val userAtual = mDatabaseReferenceUsers.child(userId)
             userAtual.child("Latitude").setValue(latitude)
@@ -80,13 +73,12 @@ class UserRepository() {
     }
 
     fun retrieveUserData(): MutableList<Profile> {
-
         var userList: MutableList<Profile> = mutableListOf()
+
         mDatabaseReferenceUsers.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 print("deu ruim")
             }
-
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
                     for (u in p0.children){
@@ -99,30 +91,59 @@ class UserRepository() {
                 }
             }
         })
-
         return userList
     }
 
-    fun addFilmToUserFavorites(favorite: Film, callback: (resultado: Boolean) -> Unit){
+    fun addFilmToUserFavorites(favorite: Film,callback: (resultado: Boolean,mensagem: String) -> Unit){
+        val filmList: MutableList<Film> = mutableListOf()
         if (mAuth.currentUser!=null){
             println("USUÁRIO ${mAuth.currentUser!!.uid}")
             val userId = mAuth.currentUser!!.uid
             val userAtual = mDatabaseReferenceUsers.child(userId)
-            userAtual.child("Favoritos").child("${favorite.id}").setValue(favorite)
-            callback(true)
+//            userAtual.child("Favoritos").child("${favorite.id}").setValue(favorite)
+            mDatabaseReferenceUsers.child(mAuth.currentUser!!.uid).child("Favoritos").addValueEventListener(object : ValueEventListener{
+                override fun onCancelled(p0: DatabaseError) {
+                    print("deu ruim")
+                }
+                override fun onDataChange(p0: DataSnapshot) {
+
+                        for (f in p0.children){
+                            val film = f.getValue(Film::class.java)
+                            Log.d("USUARIO ATUAL LOG","FILME ${film!!.title}")
+                            filmList.add(film)
+
+                        }
+
+                }
+            })
+            if (filmList.contains(favorite)){
+                callback(false,"Você já adicionou esse filme!")
+            }else{
+                userAtual.child("Favoritos").child("${favorite.id}").setValue(favorite)
+                callback(true,"Adicionado aos favoritos com sucesso!")
+            }
         }else{
             println("Usuário deslogado")
+            callback(false,"Ops! Algo deu errado!")
+        }
+    }
+
+    fun removeFilmUserFavorites(id: String, callback: (resultado: Boolean) -> Unit){
+        if (mDatabaseReferenceUsers.child(mAuth.currentUser!!.uid).child("Favoritos").child(id).removeValue().isSuccessful){
+            callback(true)
+        }else{
             callback(false)
         }
     }
+
+
     fun retrieveFavoritesFromUser(callback: (films: Array<Film>)->Unit){
         var filmList: MutableList<Film> = mutableListOf()
 
-        mDatabaseReferenceUsers.child("${mAuth.currentUser!!.uid}").child("Favoritos").addValueEventListener(object : ValueEventListener{
+        mDatabaseReferenceUsers.child(mAuth.currentUser!!.uid).child("Favoritos").addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 print("deu ruim")
             }
-
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
                     for (f in p0.children){
@@ -137,15 +158,13 @@ class UserRepository() {
                 }
             }
         })
-
     }
 
     fun getCurrentUserData(callback: (user: Profile)->Unit){
-        mDatabaseReferenceUsers.child("${mAuth.currentUser!!.uid}").addValueEventListener(object : ValueEventListener{
+        mDatabaseReferenceUsers.child(mAuth.currentUser!!.uid).addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 print("deu ruim")
             }
-
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
                     val user = p0.getValue(Profile::class.java)
@@ -155,11 +174,9 @@ class UserRepository() {
                 }
             }
         })
-
     }
 
     fun retrieveUserDataWithLocation(location: LatLng, callback: (nome: String, films: Array<Film>) -> Unit) {
-
         val filmList: MutableList<Film> = mutableListOf()
         val latitude = location.latitude
         val longitude = location.longitude
@@ -168,7 +185,6 @@ class UserRepository() {
             override fun onCancelled(p0: DatabaseError) {
                 print("deu ruim")
             }
-
             override fun onDataChange(p0: DataSnapshot) {
                 if (p0.exists()){
                     for (u in p0.children){
@@ -182,12 +198,10 @@ class UserRepository() {
                                 override fun onCancelled(p0: DatabaseError) {
                                     print("deu ruim")
                                 }
-
                                 override fun onDataChange(p0: DataSnapshot) {
                                     if (p0.exists()){
                                         for (f in p0.children){
                                             val film = f.getValue(Film::class.java)
-
                                             filmList.add(film!!)
                                         }
                                         Log.d("USER MAPA", "${user.Nome} ${filmList.toTypedArray().contentToString()}")
@@ -199,15 +213,11 @@ class UserRepository() {
                                 }
                             })
                         }
-
                     }
                 }else{
                     print("vazio")
                 }
             }
         })
-
-
     }
-
 }

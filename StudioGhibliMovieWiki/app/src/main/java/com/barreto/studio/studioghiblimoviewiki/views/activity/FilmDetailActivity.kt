@@ -26,6 +26,7 @@ class FilmDetailActivity : AppCompatActivity() {
         val description: String? = film.description
         val releaseDate: String? = film.releaseDate
         val director: String? = film.director
+        val id: String? = film.id
 
         //        val title: String? = intent.getStringExtra("title")
 //        val description: String? = intent.getStringExtra("description")
@@ -38,6 +39,7 @@ class FilmDetailActivity : AppCompatActivity() {
         tvDirectorDetail.text = director
 
         btnAddFavorite.setOnClickListener {addFilmToUserFavorites(film)}
+        btnRemoveFavorite.setOnClickListener{removeFilmUserFavorites(id!!)}
     }
 
     private val viewModel: UserViewModel by lazy {
@@ -50,7 +52,18 @@ class FilmDetailActivity : AppCompatActivity() {
             if (it){
                 Toast.makeText(this,"Adicionado aos favoritos com sucesso!",Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(this,"Ops! Algo deu errado!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"Você já adicionou esse filme!",Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    fun removeFilmUserFavorites(id: String){
+        viewModel.removeFilmUserFavorites(id)
+        viewModel.result.observe(this, Observer {
+            if (it){
+                Toast.makeText(this,"Filme removido dos favoritos com sucesso!",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this,"Não foi possível remover esse filme",Toast.LENGTH_SHORT).show()
             }
         })
     }

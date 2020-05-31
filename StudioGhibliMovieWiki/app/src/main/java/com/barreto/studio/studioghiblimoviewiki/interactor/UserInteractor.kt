@@ -92,8 +92,14 @@ class UserInteractor (private val context: Context) {
         }
     }
 
-    fun addFilmToUserFavorites(favorite: Film, callback: (resultado: Boolean)->Unit){
+    fun addFilmToUserFavorites(favorite: Film,callback: (resultado: Boolean,mensagem: String)->Unit){
         userRepository.addFilmToUserFavorites(favorite){
+            resultado, mensagem -> callback(resultado, mensagem)
+        }
+    }
+
+    fun removeFilmUserFavorites(id: String, callback: (resultado: Boolean) -> Unit){
+        userRepository.removeFilmUserFavorites(id){
             callback(it)
         }
     }

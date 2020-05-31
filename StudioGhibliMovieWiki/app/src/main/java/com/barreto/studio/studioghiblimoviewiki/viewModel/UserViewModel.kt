@@ -60,7 +60,14 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
     }
 
     fun addFilmToUserFavorites(favorite: Film){
-        interactor.addFilmToUserFavorites(favorite){
+        interactor.addFilmToUserFavorites(favorite){resultado, mensagem ->
+            result.value = resultado
+            msg.value = mensagem
+        }
+    }
+
+    fun removeFilmUserFavorites(id: String){
+        interactor.removeFilmUserFavorites(id){
             result.value = it
         }
     }
