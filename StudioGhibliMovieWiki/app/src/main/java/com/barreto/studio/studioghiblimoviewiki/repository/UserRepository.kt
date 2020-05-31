@@ -130,9 +130,9 @@ class UserRepository() {
 
     fun removeFilmUserFavorites(id: String, callback: (resultado: Boolean) -> Unit){
         if (mDatabaseReferenceUsers.child(mAuth.currentUser!!.uid).child("Favoritos").child(id).removeValue().isSuccessful){
-            callback(true)
-        }else{
             callback(false)
+        }else{
+            callback(true)
         }
     }
 
@@ -154,7 +154,7 @@ class UserRepository() {
                     }
                     callback(filmList.toTypedArray())
                 }else{
-                    print("vazio")
+                    callback(filmList.toTypedArray())
                 }
             }
         })

@@ -1,7 +1,6 @@
 package com.barreto.studio.studioghiblimoviewiki.views.activity
 
 import android.content.Intent
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
@@ -14,7 +13,6 @@ import com.barreto.studio.studioghiblimoviewiki.views.adapter.FilmAdapter
 import com.barreto.studio.studioghiblimoviewiki.views.adapter.OnFilmItemClickListener
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_nearby_users_profile.*
-import kotlinx.android.synthetic.main.activity_profile.*
 import java.io.Serializable
 
 class NearbyUsersProfile : AppCompatActivity(), OnFilmItemClickListener {

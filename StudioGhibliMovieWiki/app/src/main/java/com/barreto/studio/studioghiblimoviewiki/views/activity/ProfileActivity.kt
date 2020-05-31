@@ -44,9 +44,12 @@ class ProfileActivity : AppCompatActivity(), OnFilmItemClickListener {
 
     private fun showFilmFavorites(){
 
-        viewModel.resultGetFavoritesFromUser.observe(this, Observer {films->
-            val adapter = FilmAdapter(films,this)
+        viewModel.resultGetFavoritesFromUser.observe(this, Observer {
+            val adapter = FilmAdapter(it,this)
             rvFavorites.adapter = adapter
+            if (it.isEmpty()){
+                tvEmpty.text = "Está bem vazio por aqui não é? Tente adicionar os filmes que mais gosta aos favoritos!"
+            }
 
         })
         viewModel.retrieveFavoritesFromUser()

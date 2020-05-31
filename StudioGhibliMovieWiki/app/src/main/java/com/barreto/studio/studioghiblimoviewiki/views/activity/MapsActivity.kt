@@ -68,8 +68,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        latTextView.text = "Latitude ${location.latitude.toString()}"
-                        lonTextView.text = "Longitude ${location.longitude.toString()}"
 
                         userRepository.updateCurrentUserLocation(location.latitude.toString(), location.longitude.toString())
 
@@ -122,9 +120,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
         @SuppressLint("SetTextI18n")
         override fun onLocationResult(locationResult: LocationResult) {
             var mLastLocation: Location = locationResult.lastLocation
-            latTextView.text = "Latitude ${mLastLocation.latitude.toString()}"
-            lonTextView.text = "Longitude ${mLastLocation.longitude.toString()}"
-
+            
         }
     }
 

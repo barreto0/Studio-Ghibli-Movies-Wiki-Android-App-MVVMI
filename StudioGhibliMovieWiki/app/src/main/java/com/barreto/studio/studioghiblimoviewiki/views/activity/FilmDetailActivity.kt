@@ -19,7 +19,6 @@ class FilmDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_film_detail)
 
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
 
         val film = intent.extras?.get("film") as Film
         val title: String? = film.title
