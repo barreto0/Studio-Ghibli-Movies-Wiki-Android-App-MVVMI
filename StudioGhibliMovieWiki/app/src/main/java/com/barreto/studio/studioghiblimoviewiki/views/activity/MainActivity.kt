@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity(), OnFilmItemClickListener {
             val intentMaps= Intent(this, MapsActivity::class.java)
             startActivity(intentMaps)
         }
+        fobChatBot.setOnClickListener{
+            val intentChatBot= Intent(this, ChatBotActivity::class.java)
+            startActivity(intentChatBot)
+        }
         configureRecyclerView()
         showFilms()
 

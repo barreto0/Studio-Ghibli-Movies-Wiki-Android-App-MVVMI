@@ -3,12 +3,15 @@ package com.barreto.studio.studioghiblimoviewiki.views.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.barreto.studio.studioghiblimoviewiki.viewModel.UserViewModel
 import com.barreto.studio.studioghiblimoviewiki.R
+import com.barreto.studio.studioghiblimoviewiki.domain.BodyPostBot
+import com.barreto.studio.studioghiblimoviewiki.repository.ChatBotRepository
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -24,6 +27,11 @@ class LoginActivity : AppCompatActivity() {
 //            val intentMaps= Intent(this, MapsActivity::class.java)
 //            startActivity(intentMaps)
 //        }
+        val body = BodyPostBot("oi","teste@teste.com","10")
+        val cbotrepo = ChatBotRepository(this,"https://dialogflow-server-pdm.herokuapp.com/")
+        cbotrepo.getResponseBot(body){
+            Log.d("BOT CALLBACK", it.message)
+        }
 
     }
 

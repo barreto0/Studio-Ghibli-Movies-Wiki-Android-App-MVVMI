@@ -18,6 +18,7 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
     val resultGetFavoritesFromUser = MutableLiveData<Array<Film>>()
 
     var username = MutableLiveData<String>()
+    var email = MutableLiveData<String>()
 
     val resultRetrieveUserFavoritesDataWithLocation = MutableLiveData<Array<Film>>()
 
@@ -82,6 +83,7 @@ class UserViewModel (val app: Application) : AndroidViewModel(app) {
     fun getCurrentUserData(){
         interactor.getCurrentUserData {
             username.value = it.Nome
+            email.value = it.Email
         }
     }
 

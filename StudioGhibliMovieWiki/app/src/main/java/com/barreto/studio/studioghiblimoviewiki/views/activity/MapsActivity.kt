@@ -75,7 +75,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback{
                             var userLocation = LatLng(u.Latitude.toDouble(),u.Longitude.toDouble())
                             mMap.addMarker(MarkerOptions().position(userLocation).title(u.Nome).icon(
                                 BitmapDescriptorFactory.fromBitmap(
-                                BitmapFactory.decodeResource(resources, R.mipmap.icon_user_location))))
+                                BitmapFactory.decodeResource(resources, R.mipmap.icon_user_location2))))
                         }
                         mMap.setOnInfoWindowClickListener { marker ->
                             val loc = LatLng(marker.position.latitude,marker.position.longitude)
